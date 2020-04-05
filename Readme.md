@@ -1,71 +1,61 @@
 # Dummy language
 
-_Dummy language_ -- это очень простой язык, в котором есть всего несколько конструкций:
+В задании требовалось реализовать различные виды статического анализа для
+языка *Dummy language*.
 
-- объявление функции
-```
-fun foo() {
-    ...
-}
+Данное решение включает в себя 5 видов статического анализа.
+Для каждого из них реализован *visitor* дерева разбора программы,
+а также *checker*, использующий *visitor* для проверки дерева на содержание
+ошибок. Для каждого вида статического анализа также реализовано исключение.
+При обнаружении ошибки, *visitor* выбрасывает соответствующее исключение, которое
+отлавливается в *cheker'е*, после чего в выходной поток записывается сообщение
+о найденной ошибке. Метод *analyze* класса [DummyLanguageAnalyzer](src/main/kotlin/org/jetbrains/dummy/lang/DummyLanguageAnalyzer.kt)
+применяет все реализованные виды статического анализа к входному файлу.
 
-fun bar(x, y) {
-   ...
-}
-```
-- объявление локальных переменных, присванивание в них значение
-```
-var x = 1;
-var y;
-y = true;
-```
-- возврат из функции
-```
-fun foo() {
-    ...
-    return 1;
-}
+**Список реализованных видов статического анализа:**
+* **Variable initialization checker**  
+Проверка того, что ни к одной переменной не было обращения до того,
+как она была инициализирована. При этом переменная считается инициализированной,
+если она была инициализирована на всех путях исполнения функции, которые могли привести
+к рассматриваемому обращению к переменной.
+    * *Checker* - [VariableInitializationChecker](src/main/kotlin/org/jetbrains/dummy/lang/checkers/VariableInitializationChecker.kt)
+    * *Visitor* - [VariableInitializationVisitor](src/main/kotlin/org/jetbrains/dummy/lang/tree/visitors/VariableInitializationVisitor.kt)
+    * *Exception* - [AccessBeforeInitializationException](src/main/kotlin/org/jetbrains/dummy/lang/exceptions/AccessBeforeInitializationException.kt)
+* **Unreachable code checker**  
+Проверка того, что в программе отсутствует код, идущий после возврата из функции.
+Например, после использования `return` или после блока `if-else`, в обеих ветвях которого
+использовался `return` (то есть в любом случае исполнение завершится в этом блоке).
+    * *Checker* - [UnreachableCodeChecker](src/main/kotlin/org/jetbrains/dummy/lang/checkers/UnreachableCodeChecker.kt)
+    * *Visitor* - [UnreachableCodeVisitor](src/main/kotlin/org/jetbrains/dummy/lang/tree/visitors/UnreachableCodeVisitor.kt)
+    * *Exception* - [UnreachableCodeException](src/main/kotlin/org/jetbrains/dummy/lang/exceptions/UnreachableCodeException.kt)
+* **Conflicting declarations checker**  
+Проверка того, что в функции ни одна переменная не объявляется повторно. Проверка также запрещает
+объявление в теле функции переменной, имя которой совпадает с именем какого-либо параметра данной функции.
+    * *Checker* - [ConflictingDeclarationsChecker](src/main/kotlin/org/jetbrains/dummy/lang/checkers/ConflictingDeclarationsChecker.kt)
+    * *Visitor* - [ConflictingDeclarationsVisitor](src/main/kotlin/org/jetbrains/dummy/lang/tree/visitors/ConflictingDeclarationsVisitor.kt)
+    * *Exception* - [ConflictingDeclarationsException](src/main/kotlin/org/jetbrains/dummy/lang/exceptions/ConflictingDeclarationsException.kt)
+* **Wrong arguments checker**  
+Проверка того, что ни одна функция не вызывается с неправильным количеством аргументов.
+То есть если в объявлении функции указано *n* параметров, то вызвать ее можно только
+с *n* параметрами, иначе данная проверка выбросит исключение.
+    * *Checker* - [WrongArgumentsChecker](src/main/kotlin/org/jetbrains/dummy/lang/checkers/WrongArgumentsChecker.kt)
+    * *Visitor* - [WrongArgumentsVisitor](src/main/kotlin/org/jetbrains/dummy/lang/tree/visitors/WrongArgumentsVisitor.kt)
+    * *Exception* - [WrongArgumentsException](src/main/kotlin/org/jetbrains/dummy/lang/exceptions/WrongArgumentsException.kt)
+* **Empty body checker**  
+Проверка того, что в программе нет пустых блоков кода. Данная проверка
+выбросит исключение, если встретит функцию, блок `if` или `else`
+с пустым телом.
+    * *Checker* - [EmptyBodyChecker](src/main/kotlin/org/jetbrains/dummy/lang/checkers/EmptyBodyChecker.kt)
+    * *Visitor* - [EmptyBodyVisitor](src/main/kotlin/org/jetbrains/dummy/lang/tree/visitors/EmptyBodyVisitor.kt)
+    * *Exception* - [EmptyBodyException](src/main/kotlin/org/jetbrains/dummy/lang/exceptions/EmptyBodyException.kt)
 
-fun bar() {
-    ...
-    return;
-}
-```
-- обращение к переменной
-- создание числовой или булевой константы
-- вызов функции
-```
-var x = foo();
-var y;
-y = bar(x, true);
-```
-- условное выражение
-```
-if (true) {
-    ...
-}
+**Тесты**
 
-if (b) {
-    ...
-} else {
-    ...
-}
-```
+Класс [DummyLanguageTestGenerated](src/test/kotlin/org/jetbrains/dummy/lang/DummyLanguageTestGenerated.kt)
+содержит тесты приведенных видов статического анализа. Тесты были сгенерированы из
+файлов в папке [testData](testData).
 
-Полную грамматику языка в формате ANTLR вы можете посмотреть в файле [DummyLanguage.g4](src/main/antlr/org/jetbrains/dummy/lang/DummyLanguage.g4)
-
-# Задача: Dummy language analyzer
-
-Вашим заданием будет реализовать различные виды статического анализа для этого языка. Отталкиваться можно от системы, которая будет проверять, что ни к одной переменной не было обращения до того, как она была проинициализрованна. Переменная считается проинициализированной, если если она была проинициализированна на всех путях исполнения функции, которые могли привести к рассматриваемому обращению к переменной. После этого вы можете реализовать ещё какие-нибудь виды анализа, которые вам покажутся логичными и полезными.
-
-
-В этом вам может помочь готовый шаблон системы анализа, который включает в себя:
-- ANTLR грамматика, описанная в [DummyLanguage.g4](src/main/antlr/org/jetbrains/dummy/lang/DummyLanguage.g4)
-- [Парсер](src/main/java/org/jetbrains/dummy/lang/DummyLanguageParser.java)
-- [Промежуточное представление, покрывающее все конструкции языка](src/main/kotlin/org/jetbrains/dummy/lang/tree/Tree.kt) и [Visitor](src/main/kotlin/org/jetbrains/dummy/lang/tree/DummyLangVisitor.kt) для него
-- [Шаблон](src/main/kotlin/org/jetbrains/dummy/lang/VariableInitializationChecker.kt), для системы проверок инициализации переменных
-
-Также в проекте предусмотрена тестовая система, которая включает в себя генератор тестов: в директории [testData](testData) можно разместить сколько угодно файлов с исходным кодом на _dummy language_ с расширением `.dummy`. После этого можно вызывать gradle task'у `:generateTests`, и для каждого файла из директории с тестовыми файлами будет сгенерирован тест в [DummyLanguageTestGenerated.kt](src/test/kotlin/org/jetbrains/dummy/lang/DummyLanguageTestGenerated.kt), который запустит систему анализа поверх соотвествующего тестового файла и сравнит ошибки, которые тот выявил с ошибками, которые записаны в соответствующий файл с расширением `.txt`.
-
-Если вы создаёте новый тест, то можно запустить его, посмотреть, что выдал анализ, и, если его вывод корректен, вручную записать его в `.txt` файл, чтобы последующие запуски этого теста проходили успешно.
-
-Больше подробностей про генератор тестов можно посмотреть в файле [TestGenerator.kt](src/test/kotlin/org/jetbrains/dummy/lang/TestGenerator.kt)
+Тесты включают в себя:
+* 5 программ на языке *Dummy language*, не содержащих ошибок
+* 10 программ на языке *Dummy language*, содержащих ошибки, которые
+отлавливаются *checker'ами*
