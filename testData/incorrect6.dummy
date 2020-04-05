@@ -1,0 +1,18 @@
+fun function(x, y, z) {
+    var a = x;
+    var b = y;
+    var c;
+
+    if (a) {
+        return true;
+    }
+
+    if (b) {
+    }
+
+    if (c) {
+        return false;
+    }
+
+    return true;
+}

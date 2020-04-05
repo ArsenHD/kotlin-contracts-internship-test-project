@@ -1,0 +1,24 @@
+fun function1() {
+    var variable;
+    var b = true;
+    var c = true;
+    var d = false;
+
+    if (b) {
+        if (c) {
+            if (d) {
+                variable = 1;
+            }
+        } else {
+            variable = 1;
+        }
+    }
+
+    if (d) {}
+
+    return variable;
+}
+
+fun function2(x) {
+    return function1(x);
+}

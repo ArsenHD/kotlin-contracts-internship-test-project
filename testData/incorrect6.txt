@@ -1,0 +1,2 @@
+ERROR: line 13: Variable 'c' is accessed before initialization
+ERROR: line 10: Empty block

@@ -1,0 +1,7 @@
+fun bar(x) {
+    if (x) {
+        return true;
+        var y = 2;
+    }
+    return false;
+}

@@ -1,0 +1,23 @@
+fun f(x) {
+    return x;
+}
+
+fun g(x) {
+    return 0;
+}
+
+fun h(x, y) {
+    var a = f(x);
+    var b = g(y);
+    var c;
+
+    if (a) {
+        c = a;
+    }
+
+    if (b) {
+        c = b;
+    }
+
+    return a;
+}

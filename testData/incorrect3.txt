@@ -1,0 +1,1 @@
+ERROR: line 10: Variable 'a' is already declared

@@ -1,0 +1,3 @@
+ERROR: line 19: Variable 'variable' is accessed before initialization
+ERROR: line 23: Wrong arguments at 'function1' function call
+ERROR: line 17: Empty block

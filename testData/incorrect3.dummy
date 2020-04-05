@@ -1,0 +1,12 @@
+fun function() {
+    var a = 1;
+
+    var flag = false;
+
+    if (flag) {
+        return a;
+    }
+
+    var a = 2;
+    return a;
+}

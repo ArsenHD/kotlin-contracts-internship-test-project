@@ -1,11 +1,13 @@
 package org.jetbrains.dummy.lang
 
+import org.jetbrains.dummy.lang.checkers.*
 import java.io.OutputStream
 
 class DummyLanguageAnalyzer(outputStream: OutputStream) {
     companion object {
         private val CHECKERS: List<(DiagnosticReporter) -> AbstractChecker> = listOf(
-            ::VariableInitializationChecker
+            ::VariableInitializationChecker, ::UnreachableCodeChecker, ::ConflictingDeclarationsChecker,
+            ::WrongArgumentsChecker, ::EmptyBodyChecker
         )
     }
 

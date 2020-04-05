@@ -1,0 +1,2 @@
+ERROR: line 2: Wrong arguments at 'bar' function call
+ERROR: line 5: Empty block

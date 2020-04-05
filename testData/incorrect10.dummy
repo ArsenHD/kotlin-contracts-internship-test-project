@@ -1,0 +1,17 @@
+fun foo(x) {
+    var a;
+    var flag = true;
+
+    if (flag) {
+        a = 1;
+    }
+
+    var b = bar();
+
+    return a;
+    var b = 1;
+}
+
+fun bar(x) {
+
+}

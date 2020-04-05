@@ -1,0 +1,8 @@
+fun foo(x, y) {
+    return true;
+    var a = 1;
+}
+
+fun bar(arg) {
+    return foo(arg);
+}

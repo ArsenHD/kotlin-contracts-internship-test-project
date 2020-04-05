@@ -1,0 +1,2 @@
+ERROR: line 3: Unreachable code
+ERROR: line 7: Wrong arguments at 'foo' function call

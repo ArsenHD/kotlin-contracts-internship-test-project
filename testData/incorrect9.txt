@@ -1,0 +1,3 @@
+ERROR: line 15: Unreachable code
+ERROR: line 13: Variable 'x' is already declared
+ERROR: line 7: Empty block

@@ -1,0 +1,16 @@
+fun foo(x) {
+    var a = true;
+    var b = false;
+
+    if (x) {
+        if (a) {
+            if (b) {
+
+            }
+        }
+    }
+
+    var x = 2;
+    return a;
+    var c = true;
+}

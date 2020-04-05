@@ -1,0 +1,16 @@
+fun bar(x, y) {
+    var flag1 = false;
+    var flag2 = false;
+
+    if (x) {
+        flag1 = true;
+    } else {
+        flag2 = true;
+    }
+
+    if (flag1) {
+        return x;
+    } else {
+        return y;
+    }
+}

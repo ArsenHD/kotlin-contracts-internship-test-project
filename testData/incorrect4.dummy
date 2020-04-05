@@ -1,0 +1,9 @@
+fun foo(x, x) {
+    var a = x;
+    var b = x;
+
+    if (a) {
+        return a;
+    }
+    return b;
+}

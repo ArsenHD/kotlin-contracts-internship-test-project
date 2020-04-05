@@ -45,6 +45,8 @@ class DummySourceToTreeTransformer {
         val ifStatementContext: If_statementContext? = if_statement()
         val returnStatementContext: Return_statementContext? = return_statement()
 
+//        println(this.text)
+//        println(returnStatementContext == null)
         return when {
             varDefContext != null -> varDefContext.transform()
             assignContext != null -> assignContext.transform()

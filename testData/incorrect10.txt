@@ -1,0 +1,5 @@
+ERROR: line 11: Variable 'a' is accessed before initialization
+ERROR: line 12: Unreachable code
+ERROR: line 12: Variable 'b' is already declared
+ERROR: line 9: Wrong arguments at 'bar' function call
+ERROR: line 15: Empty block

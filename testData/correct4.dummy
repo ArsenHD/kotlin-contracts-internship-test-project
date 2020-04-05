@@ -1,0 +1,9 @@
+fun foo(x) {
+    var flag = false;
+
+    if (x) {
+        flag = true;
+    }
+
+    return flag;
+}
