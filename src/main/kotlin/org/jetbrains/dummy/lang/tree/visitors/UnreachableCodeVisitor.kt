@@ -46,10 +46,18 @@ class UnreachableCodeVisitor : DummyLangVisitor<Boolean, Boolean>() {
         }
         val thenBlock = ifStatement.thenBlock
         val elseBlock = ifStatement.elseBlock
+        val condition = ifStatement.condition
+
+        if ((condition is BooleanConst) && (condition.value)) {
+            return thenBlock.accept(this, data)
+        }
+
+        if ((condition is BooleanConst) && (!condition.value)) {
+            return elseBlock?.accept(this, data) ?: false
+        }
 
         val thenReturned = thenBlock.accept(this, data)
         val elseReturned = elseBlock?.accept(this, data) ?: false
-
         return thenReturned && elseReturned
     }
 

@@ -10,10 +10,8 @@ class EmptyBodyVisitor : DummyLangVisitor<Unit, Any?>() {
 
     override fun visitFile(file: File, data: Any?) {
         val functions = file.functions
-        var isReturnStatementReached = data
         functions.forEach {
-            it.accept(this, isReturnStatementReached)
-            isReturnStatementReached = false
+            it.accept(this, null)
         }
         return visitElement(file, data)
     }

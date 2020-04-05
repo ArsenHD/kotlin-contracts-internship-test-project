@@ -45,12 +45,16 @@ class VariableInitializationVisitor : DummyLangVisitor<Unit, MutableSet<String>>
         dataCopyThen.addAll(data)
         dataCopyElse.addAll(data)
 
-        thenBlock.accept(this, dataCopyThen)
-        elseBlock?.accept(this, dataCopyElse)
-
         if ((condition is BooleanConst) && (condition.value)) {
+            thenBlock.accept(this, dataCopyThen)
             data.addAll(dataCopyThen)
+        } else if ((condition is BooleanConst) && (!condition.value)) {
+            elseBlock?.accept(this, dataCopyElse)
+            data.addAll(dataCopyElse)
         } else {
+            thenBlock.accept(this, dataCopyThen)
+            elseBlock?.accept(this, dataCopyElse)
+
             dataCopyThen.removeIf { data.contains(it) }
             dataCopyThen.forEach {
                 if (dataCopyElse.contains(it)) {
