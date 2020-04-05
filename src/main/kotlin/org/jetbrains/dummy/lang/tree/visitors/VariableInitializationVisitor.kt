@@ -12,7 +12,7 @@ class VariableInitializationVisitor : DummyLangVisitor<Unit, MutableSet<String>>
         val functions = file.functions
         functions.forEach {
             it.accept(this, data) // traverse each function in the file
-            data.clear()                 // each time starting with an empty set
+            data.clear()          // each time starting with an empty set
         }
     }
 
@@ -46,10 +46,10 @@ class VariableInitializationVisitor : DummyLangVisitor<Unit, MutableSet<String>>
         dataCopyElse.addAll(data) // branches of the "if" statement
 
         if ((condition is BooleanConst) && (condition.value)) { // if the condition is a boolean constant "true"
-            thenBlock.accept(this, dataCopyThen)         // then consider only "then" block
+            thenBlock.accept(this, dataCopyThen)                // then consider only "then" block
             data.addAll(dataCopyThen)
         } else if ((condition is BooleanConst) && (!condition.value)) { // if the condition is a boolean constant "false"
-            elseBlock?.accept(this, dataCopyElse)                // then consider only "else" block if there is one
+            elseBlock?.accept(this, dataCopyElse)                       // then consider only "else" block if there is one
             data.addAll(dataCopyElse)
         } else { // otherwise, consider both branches
             thenBlock.accept(this, dataCopyThen)
