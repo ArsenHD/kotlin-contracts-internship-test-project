@@ -12,7 +12,7 @@ class ConflictingDeclarationsVisitor : DummyLangVisitor<Unit, MutableSet<String>
         val functions = file.functions
         functions.forEach {
             it.accept(this, data) // visit each function in the file
-            data.clear()                 // each time starting with an empty set
+            data.clear()          // each time starting with an empty set
         }
     }
 
